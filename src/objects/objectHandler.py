@@ -53,10 +53,11 @@ class InteractiveObject:
 class ObjectHandler:
     def __init__(self, specs, scene_manager):
         class_map = {
-            "TreeStump":        "src.objects.treeStump",
+            "TreeStump":    "src.objects.treeStump",
             "DoorOne":      "src.objects.doorOne",
             "DoorTwo":      "src.objects.doorTwo",
-            "Collectible": "src.objects.collectible",
+            "Collectible":  "src.objects.collectible",
+            "ConditionalObject":"src.objects.conditionalObject",
         }
 
         self.objects = []
@@ -69,6 +70,14 @@ class ObjectHandler:
             elif spec["class"] == "Collectible":
                 cls = getattr(module, "Collectible")
                 obj = cls(spec["pos"], spec["item_id"], spec.get("message"))
+            elif spec["class"] == "ConditionalObject":
+                obj = cls(
+                    spec["pos"],
+                    spec["required_item"],
+                    spec["locked_message"],
+                    spec["unlock_message"],
+                    spec.get("action_callable")
+                )
             else:
                 obj = cls(spec["pos"], spec.get("message"))
             self.objects.append(obj)
@@ -81,13 +90,12 @@ class ObjectHandler:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_z:
             for obj in self.objects:
                 if obj.is_player_facing(player):
-                    # duck-type check for Door
+                    
                     if hasattr(obj, "leads_to"):
                         obj.interact(screen)
                         return {"type":"door",
                                 "spawn": obj.scene_manager.current_room.spawn_point}
 
-                    # collectible: pick up and remove
                     if hasattr(obj, "item_id"):
                         item_id = obj.interact(screen)  # shows popup & returns item_id
                         self.objects.remove(obj)        # <<< remove it immediately
@@ -95,6 +103,12 @@ class ObjectHandler:
                                 "item_id": item_id,
                                 "obj": obj}
 
-                    # otherwise, just a popup object
+                    if hasattr(obj, "required_item"):
+                        item_id = obj.interact(screen)  # shows popup & returns item_id
+                        self.objects.remove(obj)        # <<< remove it immediately
+                        return {"type":"collrequirerectible",
+                                "item_id": item_id,
+                                "obj": obj}
+                        
                     return {"type":"popup", "obj": obj}
         return None
