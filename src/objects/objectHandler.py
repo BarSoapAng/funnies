@@ -57,6 +57,9 @@ class ObjectHandler:
             "DoorOne":      "src.objects.doorOne",
             "DoorTwo":      "src.objects.doorTwo",
             "Collectible": "src.objects.collectible",
+            "Vase" : "src.objects.vase",
+            "DoorRose" : "src.objects.doorRose",
+            "FrontDoor" : "src.objects.frontDoor",
         }
 
         self.objects = []
@@ -64,13 +67,27 @@ class ObjectHandler:
             module_name = class_map[spec["class"]]
             module = importlib.import_module(module_name)
             cls = getattr(module, spec["class"])
-            if spec["class"] == "DoorOne" or spec["class"] == "DoorTwo": 
+            
+            if spec["class"] in ("DoorOne", "DoorTwo"):
                 obj = cls(spec["pos"], spec["leads_to"], scene_manager)
+            
+            elif spec["class"] == "DoorRose":
+                obj = cls(spec["pos"], spec["leads_to"], scene_manager)
+                roseDoor_obj = obj
+
+            elif spec["class"] == "FrontDoor":
+                obj = cls(spec["pos"], spec["leads_to"], scene_manager)
+                frontDoor_obj = obj
+            
             elif spec["class"] == "Collectible":
-                cls = getattr(module, "Collectible")
                 obj = cls(spec["pos"], spec["item_id"], spec.get("message"))
+                
+            elif spec["class"] == "Vase":
+                obj = cls(spec["pos"], scene_manager, roseDoor_obj)
+            
             else:
                 obj = cls(spec["pos"], spec.get("message"))
+                
             self.objects.append(obj)
 
     def draw(self, surface, cam_off):
@@ -83,9 +100,11 @@ class ObjectHandler:
                 if obj.is_player_facing(player):
                     # duck-type check for Door
                     if hasattr(obj, "leads_to"):
-                        obj.interact(screen)
-                        return {"type":"door",
-                                "spawn": obj.scene_manager.current_room.spawn_point}
+                        if obj.interact(screen):
+                            return {"type":"door",
+                                    "spawn": obj.scene_manager.current_room.spawn_point}
+                        else:
+                            return {"type":"popup", "obj": obj}
 
                     # collectible: pick up and remove
                     if hasattr(obj, "item_id"):

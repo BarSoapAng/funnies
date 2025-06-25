@@ -31,7 +31,11 @@ def main():
           
             res = scenes.current_room.objects.handle_event(event, player, screen)
             if res:
-                if res["type"] == "door":
+                if res["type"] == "pin":
+                    ####################################### EDIT HERE
+                    popup_obj = True
+                    continue
+                elif res["type"] == "door":
                     x,y = res["spawn"]
                     player.x = x * TILE_SIZE
                     player.y = y * TILE_SIZE - TILE_SIZE

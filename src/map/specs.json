@@ -13,7 +13,8 @@
     {"class":"Collectible", "pos":[3,6],  "item_id":"rose", "message":"You picked up a knitted rose."}
   ],
   "lightsRose.csv": [
-    {"class":"DoorTwo",     "pos":[5,1],"leads_to":"hallway.csv"},
-    {"class":"DoorOne",     "pos":[10,10],"leads_to":"hallway.csv"}
+    {"class":"DoorRose",     "pos":[5,1],"leads_to":"gallery1.csv"},
+    {"class":"DoorOne",     "pos":[10,10],"leads_to":"hallway.csv"},
+    {"class":"Vase",     "pos":[7,3]}
   ]
 }
