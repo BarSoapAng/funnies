@@ -1,0 +1,19 @@
+{
+  "courtyard.csv": [
+    {"class":"TreeStump","pos":[15,8],"message":"Some day special..."},
+    {"class":"DoorTwo",     "pos":[9,3],"leads_to":"hallway.csv"}
+  ],
+  "hallway.csv": [
+    {"class":"DoorOne",     "pos":[19,3],"leads_to":"roseRoom.csv"},
+    {"class":"DoorOne",     "pos":[0,3],"leads_to":"lightsRose.csv"},
+    {"class":"DoorOne",     "pos":[9,4],"leads_to":"courtyard.csv"}
+  ],
+  "roseRoom.csv": [
+    {"class":"DoorOne",     "pos":[0,6],"leads_to":"hallway.csv"},
+    {"class":"Collectible", "pos":[3,6],  "item_id":"rose", "message":"You picked up a knitted rose."}
+  ],
+  "lightsRose.csv": [
+    {"class":"DoorTwo",     "pos":[5,1],"leads_to":"hallway.csv"},
+    {"class":"DoorOne",     "pos":[10,10],"leads_to":"hallway.csv"}
+  ]
+}
