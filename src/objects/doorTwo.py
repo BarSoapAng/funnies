@@ -14,4 +14,5 @@ class DoorTwo(InteractiveObject):
 
     def interact(self, screen):
         self.scene_manager.load_room(self.leads_to)
+        return True
 

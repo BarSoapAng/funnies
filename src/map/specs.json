@@ -13,9 +13,9 @@
     {"class":"Collectible", "pos":[3,6],  "item_id":"rose", "message":"You picked up a knitted rose."}
   ],
   "lightsRose.csv": [
-    {"class":"DoorTwo",     "pos":[5,1], "spawn":[10,4], "leads_to":"gallery1.csv"},
-    {"class":"DoorOne",     "pos":[10,10], "spawn":[10,4], "leads_to":"hallway.csv"},
-    {"class":"ConditionalObject", "pos":[3,6],  "required_item":"rose", "locked_message":"It's missing something.", "unlock_message":"Thank you for the roses!", "action_callable": ""}
+    {"class":"DoorRose",     "pos":[5,1],"leads_to":"gallery1.csv"},
+    {"class":"DoorOne",     "pos":[10,10],"leads_to":"hallway.csv"},
+    {"class":"Vase",     "pos":[7,3]}
   ],
   "gallery1.csv": [
     {"class":"DoorOne",     "pos":[0,4], "spawn":[10,4], "leads_to":"lightsRose.csv"},
