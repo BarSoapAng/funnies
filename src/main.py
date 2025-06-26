@@ -2,7 +2,7 @@ import pygame
 import sys
 from src.map.scene    import SceneManager
 from src.entity.player import Player
-from src.objects.collectible import Collectible
+from src.objects.conditionalObject import ConditionalObject
 
 SCREEN_W, SCREEN_H = 800, 600
 TILE_SIZE = 32
@@ -46,8 +46,15 @@ def main():
                     scenes.collected_items.add(item_id)
                     popup_obj = res["obj"]
                     print(inventory)
-                else:  # popup
+                else:
                     popup_obj = res["obj"]
+                    
+                    if isinstance(popup_obj, ConditionalObject):
+                        co = popup_obj
+                        # if they had the key, co.interact already ran action()
+                        if co.required_item in scenes.collected_items:
+                            scenes.current_room.objects.objects.remove(co)
+
             
             if event.type == pygame.KEYDOWN and event.key == pygame.K_x:
                 popup_obj = None
