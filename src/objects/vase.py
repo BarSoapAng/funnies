@@ -9,7 +9,6 @@ class Vase(InteractiveObject):
         self.scene_manager = scene_manager
         self.door = door
 
-################# EDIT THIS #############################3
     def _make_popup(self):
         font = pygame.font.SysFont(None, 24)
         text = font.render(self.message, True, (255, 255, 255))

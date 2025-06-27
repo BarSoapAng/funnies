@@ -14,11 +14,16 @@ def main():
     popup_obj = None
     inventory = []
 
+    player = Player()
+
     # load first room
-    scenes = SceneManager(screen.get_size())
+    scenes = SceneManager(screen.get_size(), player)
     scenes.load_room("courtyard.csv")
 
-    player = Player(scenes.current_room.spawn_point)
+    spawn = scenes.current_room.spawn_point
+    print(spawn)
+    player.x = spawn[0] * TILE_SIZE
+    player.y = spawn[1] * TILE_SIZE - TILE_SIZE
 
     running = True
     while running:
@@ -37,13 +42,12 @@ def main():
                     popup_obj.pinPad.active = False
                     popup_obj = None
                 continue 
-            else:
-                popup_obj = None
           
             if res:
                 if res["type"] == "door":
-                    scenes.load_room(res["obj"].leads_to)  # Make sure you load the new room here!
-                    x, y = scenes.current_room.spawn_point
+                    door = res["obj"]
+                    scenes.load_room(door.leads_to)  # Make sure you load the new room here!
+                    x, y = door.spawn
                     player.x = x * TILE_SIZE
                     player.y = y * TILE_SIZE - TILE_SIZE
                     popup_obj = None

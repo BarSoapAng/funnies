@@ -8,10 +8,9 @@ def load_and_scale(path, w, h):
   
 
 class Player:
-    def __init__(self, spawn):
-        # spawn is (x_tile, y_tile)
-        self.x = spawn[0] * TILE_SIZE
-        self.y = spawn[1] * TILE_SIZE - TILE_SIZE  # two tiles tall
+    def __init__(self):
+        self.x = 0
+        self.y = 0  # two tiles tall
         self.speed = 120  # pixels per second
         self.dir = "down"
         self.frame = 0

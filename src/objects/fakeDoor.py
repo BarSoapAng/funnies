@@ -2,12 +2,11 @@ from .doorTwo import DoorTwo
 from src.main import screen, TILE_SIZE
 import pygame
 
-class PinPadPopup:
-    def __init__(self, door):
-        self.correct_code = "070424"
+class FakePadPopup:
+    def __init__(self):
+        self.correct_code = "."
         self.input_code = ""
         self.active = True
-        self.door = door
         self.message = ""
         # self.on_success = "Something unlocked."
         # self.on_fail = "Hint: 6 numbers"
@@ -34,12 +33,8 @@ class PinPadPopup:
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                if self.input_code == self.correct_code:
-                    self.active = False
-                    self.door.open = True
-                else:
-                    self.message = "Hint: 6#"
-                    self.input_code = ""
+                self.message = ":3"
+                self.input_code = ""
             elif event.key == pygame.K_BACKSPACE:
                 self.input_code = self.input_code[:-1]
             elif event.key == pygame.K_x:
@@ -47,21 +42,11 @@ class PinPadPopup:
             elif event.unicode.isdigit():
                 self.input_code += event.unicode
 
-class FrontDoor(DoorTwo):
-    def __init__(self, tile_pos, leads_to, scene_manager, spawn_point, player):
+class FakeDoor(DoorTwo):
+    def __init__(self, tile_pos, leads_to, scene_manager, spawn_point):
         super().__init__(tile_pos, leads_to, scene_manager, spawn_point)
-        self.open = False
-        self.pinPad = PinPadPopup(self)
-        self.player = player
+        self.pinPad = FakePadPopup()
 
     def interact(self, screen):
-        if self.open:
-            self.scene_manager.load_room(self.leads_to)
-            x, y = self.spawn
-            self.player.x = x * TILE_SIZE
-            self.player.y = y * TILE_SIZE - TILE_SIZE
-            return True
-        else:
-            self.pinPad.active = True
-            return False
-
+        self.pinPad.active = True
+        return False

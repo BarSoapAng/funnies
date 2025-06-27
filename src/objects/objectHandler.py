@@ -51,7 +51,7 @@ class InteractiveObject:
 
 
 class ObjectHandler:
-    def __init__(self, specs, scene_manager):
+    def __init__(self, specs, scene_manager, player):
         class_map = {
             "TreeStump":    "src.objects.treeStump",
             "DoorOne":      "src.objects.doorOne",
@@ -60,6 +60,7 @@ class ObjectHandler:
             "Vase" : "src.objects.vase",
             "DoorRose" : "src.objects.doorRose",
             "FrontDoor" : "src.objects.frontDoor",
+            "FakeDoor" : "src.objects.fakeDoor",
         }
 
         self.objects = []
@@ -68,17 +69,16 @@ class ObjectHandler:
             module = importlib.import_module(module_name)
             cls = getattr(module, spec["class"])
             
-            if spec["class"] in ("DoorOne", "DoorTwo"):
-                obj = cls(spec["pos"], spec["leads_to"], scene_manager)
+            if spec["class"] in ("DoorOne", "DoorTwo", "FakeDoor"):
+                obj = cls(spec["pos"], spec["leads_to"], scene_manager, spec["spawn_point"])
+            
+            elif spec["class"] == "FrontDoor":
+                obj = cls(spec["pos"], spec["leads_to"], scene_manager, spec["spawn_point"], player)
             
             elif spec["class"] == "DoorRose":
-                obj = cls(spec["pos"], spec["leads_to"], scene_manager)
+                obj = cls(spec["pos"], spec["leads_to"], scene_manager, spec["spawn_point"])
                 roseDoor_obj = obj
 
-            elif spec["class"] == "FrontDoor":
-                obj = cls(spec["pos"], spec["leads_to"], scene_manager)
-                frontDoor_obj = obj
-            
             elif spec["class"] == "Collectible":
                 obj = cls(spec["pos"], spec["item_id"], spec.get("message"))
                 

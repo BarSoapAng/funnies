@@ -10,7 +10,7 @@ with open("src\map\specs.json") as f:
     ALL_SPECS = json.load(f)
 
 class Room:
-    def __init__(self, grid, spawn, SceneManager, map_name, collected):
+    def __init__(self, grid, spawn, SceneManager, map_name, collected, player):
         self.grid = grid        # 2D list of strings
         self.spawn_point = spawn
         
@@ -21,7 +21,7 @@ class Room:
             if s.get("item_id") and s["item_id"] in collected:
                 continue
             filtered.append(s)
-        self.objects = ObjectHandler(filtered, SceneManager)
+        self.objects = ObjectHandler(filtered, SceneManager, player)
 
 
     def collides(self, rect):
@@ -50,10 +50,11 @@ class Room:
         self.objects.draw(surf, camera_offset)
 
 class SceneManager:
-    def __init__(self, screen_size):
+    def __init__(self, screen_size, player):
         self.current_room = None
         self.screen_size = screen_size
         self.collected_items = set()
+        self.player = player
 
     def load_room(self, filename):
         grid = []
@@ -65,4 +66,4 @@ class SceneManager:
                 for x,cell in enumerate(row):
                     if cell == "S":  # mark spawn in your CSV
                         spawn = (x, y)
-        self.current_room = Room(grid, spawn, self, filename, self.collected_items)
+        self.current_room = Room(grid, spawn, self, filename, self.collected_items, self.player)
