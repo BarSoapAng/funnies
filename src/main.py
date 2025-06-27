@@ -2,15 +2,14 @@ import pygame
 import sys
 from src.map.scene    import SceneManager
 from src.entity.player import Player
-from src.objects.conditionalObject import ConditionalObject
 
 SCREEN_W, SCREEN_H = 800, 600
 TILE_SIZE = 32
 FPS = 60
+screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
     clock = pygame.time.Clock()
     popup_obj = None
     inventory = []
@@ -30,13 +29,21 @@ def main():
               running = False
           
             res = scenes.current_room.objects.handle_event(event, player, screen)
+
+            if popup_obj and hasattr(popup_obj, "pinPad") and popup_obj.pinPad.active:
+                popup_obj.pinPad.handle_event(event)
+                # Optionally allow closing with X key globally
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_x:
+                    popup_obj.pinPad.active = False
+                    popup_obj = None
+                continue 
+            else:
+                popup_obj = None
+          
             if res:
-                if res["type"] == "pin":
-                    ####################################### EDIT HERE
-                    popup_obj = True
-                    continue
-                elif res["type"] == "door":
-                    x,y = res["spawn"]
+                if res["type"] == "door":
+                    scenes.load_room(res["obj"].leads_to)  # Make sure you load the new room here!
+                    x, y = scenes.current_room.spawn_point
                     player.x = x * TILE_SIZE
                     player.y = y * TILE_SIZE - TILE_SIZE
                     popup_obj = None
@@ -48,12 +55,6 @@ def main():
                     print(inventory)
                 else:
                     popup_obj = res["obj"]
-                    
-                    if isinstance(popup_obj, ConditionalObject):
-                        co = popup_obj
-                        # if they had the key, co.interact already ran action()
-                        if co.required_item in scenes.collected_items:
-                            scenes.current_room.objects.objects.remove(co)
 
             
             if event.type == pygame.KEYDOWN and event.key == pygame.K_x:
@@ -73,8 +74,8 @@ def main():
         if popup_obj:
             popup_obj.interact(screen)
             
-        # event loop
-        scenes.current_room.objects.handle_event(event, player, screen)
+        if hasattr(popup_obj, "pinPad") and popup_obj.pinPad.active:
+            popup_obj.pinPad.draw()
 
         pygame.display.flip()
 

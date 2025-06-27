@@ -1,7 +1,7 @@
 {
   "courtyard.csv": [
     {"class":"TreeStump","pos":[15,8],"message":"Some day special..."},
-    {"class":"DoorTwo",     "pos":[9,3],"leads_to":"hallway.csv"}
+    {"class":"FrontDoor",     "pos":[9,3],"leads_to":"hallway.csv"}
   ],
   "hallway.csv": [
     {"class":"DoorOne",     "pos":[19,3], "spawn":[10,4], "leads_to":"roseRoom.csv"},

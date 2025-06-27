@@ -46,6 +46,15 @@ class Player:
             dx = -self.speed * dt; self.dir = "left"
         elif keys[pygame.K_RIGHT]:
             dx = self.speed * dt;  self.dir = "right"
+            
+        # if keys[pygame.K_w]:
+        #     dy = -self.speed * dt; self.dir = "up"
+        # elif keys[pygame.K_s]:
+        #     dy = self.speed * dt;  self.dir = "down"
+        # elif keys[pygame.K_a]:
+        #     dx = -self.speed * dt; self.dir = "left"
+        # elif keys[pygame.K_d]:
+        #     dx = self.speed * dt;  self.dir = "right"
 
         # simulate 1×1 collision at foot:
         new_x = self.x + dx

@@ -1,10 +1,8 @@
-from .doorTwo import DoorTwo, TILE_SIZE
+from .doorTwo import DoorTwo
 
 class DoorRose(DoorTwo):
     def __init__(self, tile_pos, leads_to, scene_manager):
         super().__init__(tile_pos, leads_to, scene_manager)
-        self.leads_to = leads_to
-        self.scene_manager = scene_manager
         self.open = False
         self.message = "It's locked."
 

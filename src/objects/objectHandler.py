@@ -101,8 +101,7 @@ class ObjectHandler:
                     
                     if hasattr(obj, "leads_to"):
                         if obj.interact(screen):
-                            return {"type":"door",
-                                    "spawn": obj.scene_manager.current_room.spawn_point}
+                            return {"type":"door", "obj":obj}
                         else:
                             return {"type":"popup", "obj": obj}
 
