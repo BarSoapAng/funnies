@@ -3,7 +3,7 @@ import sys
 from src.map.scene    import SceneManager
 from src.entity.player import Player
 
-SCREEN_W, SCREEN_H = 800, 600
+SCREEN_W, SCREEN_H = 500, 400
 TILE_SIZE = 32
 FPS = 60
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
@@ -18,12 +18,10 @@ def main():
 
     # load first room
     scenes = SceneManager(screen.get_size(), player)
-    scenes.load_room("courtyard.csv")
+    scenes.load_room("courtyard")
 
-    spawn = scenes.current_room.spawn_point
-    print(spawn)
-    player.x = spawn[0] * TILE_SIZE
-    player.y = spawn[1] * TILE_SIZE - TILE_SIZE
+    player.x = 8 * TILE_SIZE
+    player.y = 9 * TILE_SIZE - TILE_SIZE
 
     running = True
     while running:
@@ -70,9 +68,8 @@ def main():
             player.update(dt, keys, scenes.current_room)
 
         # draw
-        screen.fill((0, 0, 0))  # the “void” outside rooms
+        screen.fill((0, 0, 0)) 
         scenes.current_room.draw(screen, player.camera_offset)
-        scenes.current_room.objects.draw(screen, player.camera_offset)
         player.draw(screen)
         
         if popup_obj:

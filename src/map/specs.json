@@ -1,36 +1,34 @@
 {
-  "courtyard.csv": [
-    {"class":"TreeStump","pos":[15,8],"message":"Some day special..."},
-    {"class":"FrontDoor",     "pos":[9,3],"leads_to":"hallway.csv","spawn_point": [9, 3]}
+  "courtyard": [
+    {"class":"Notes","pos":[14,10],"message":"Some day special..."},
+    {"class":"FrontDoor",     "pos":[8,3],"leads_to":"hallway","spawn_point": [10, 3]}
   ],
-  "hallway.csv": [
-    {"class":"DoorOne",     "pos":[19,3], "leads_to":"roseRoom.csv","spawn_point": [1, 6]},
-    {"class":"DoorOne",     "pos":[0,3], "leads_to":"lightsRose.csv","spawn_point": [9, 10]},
-    {"class":"DoorOne",     "pos":[9,4], "leads_to":"courtyard.csv","spawn_point": [9, 4]}
+  "hallway": [
+    {"class":"DoorOne",     "pos":[19,3], "leads_to":"roseRoom","spawn_point": [1, 6]},
+    {"class":"DoorOne",     "pos":[0,3], "leads_to":"lightsRose","spawn_point": [7, 6]},
+    {"class":"DoorOne",     "pos":[10,4], "leads_to":"courtyard","spawn_point": [8, 4]}
   ],
-  "roseRoom.csv": [
-    {"class":"DoorOne",     "pos":[0,6], "leads_to":"hallway.csv","spawn_point": [18, 3]},
-    {"class":"Collectible", "pos":[3,6],  "item_id":"rose", "message":"You picked up a knitted rose."}
+  "roseRoom": [
+    {"class":"DoorOne",     "pos":[0,6], "leads_to":"hallway","spawn_point": [18, 3]},
+    {"class":"Collectible", "pos":[4,4],  "item_id":"rose", "message":"You picked up a knitted rose."}
   ],
-  "lightsRose.csv": [
-    {"class":"DoorRose",     "pos":[5,1],"leads_to":"gallery1.csv","spawn_point": [1, 4]},
-    {"class":"DoorOne",     "pos":[10,10],"leads_to":"hallway.csv","spawn_point": [1, 3]},
-    {"class":"Vase",     "pos":[8,2]}
+  "lightsRose": [
+    {"class":"DoorRose",     "pos":[4,1],"leads_to":"gallery1","spawn_point": [1, 5]},
+    {"class":"DoorOne",     "pos":[8,6],"leads_to":"hallway","spawn_point": [1, 3]},
+    {"class":"Vase",     "pos":[6,1]}
   ],
-  "gallery1.csv": [
-    {"class":"DoorOne",     "pos":[0,4], "leads_to":"lightsRose.csv","spawn_point": [5, 2]},
-    {"class":"DoorOne",     "pos":[20,4], "spawn":[10,4], "leads_to":"gallery2.csv","spawn_point": [1, 4]}
+  "gallery1": [
+    {"class":"DoorOne",     "pos":[0,5], "leads_to":"lightsRose","spawn_point": [4, 2]},
+    {"class":"DoorOne",     "pos":[30,5], "leads_to":"silly","spawn_point": [1, 6]}
   ],
-  "gallery2.csv": [
-    {"class":"DoorOne",     "pos":[0,4], "leads_to":"gallery1.csv","spawn_point": [19, 4]},
-    {"class":"DoorOne",     "pos":[20,4], "leads_to":"silly.csv","spawn_point": [1, 10]}
+  "silly": [
+    {"class":"FakeDoor",     "pos":[4,1], "leads_to":"silly","spawn_point": [0, 0]},
+    {"class":"DoorOne",     "pos":[0,6], "leads_to":"gallery1","spawn_point": [29, 5]},
+    {"class":"DoorOne",     "pos":[8,3], "leads_to":"final","spawn_point": [1, 4]},
+    {"class":"Notes","pos":[6,1],"message":"Things are not what they seem..."}
   ],
-  "silly.csv": [
-    {"class":"FakeDoor",     "pos":[5,1], "leads_to":"silly.csv","spawn_point": [0, 0]},
-    {"class":"DoorOne",     "pos":[0,10], "leads_to":"gallery2.csv","spawn_point": [19, 4]},
-    {"class":"DoorOne",     "pos":[9,1], "leads_to":"final.csv","spawn_point": [1, 3]}
-  ],
-  "final.csv": [
-    {"class":"DoorOne",     "pos":[0,4], "leads_to":"silly.csv","spawn_point": [9, 3]}
+  "final": [
+    {"class":"DoorOne",     "pos":[0,4], "leads_to":"silly","spawn_point": [7, 3]},
+    {"class":"Notes","pos":[4,2],"message":"Happy 1 Year Anniversary :3"}
   ]
 }

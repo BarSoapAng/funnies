@@ -15,11 +15,29 @@ class Player:
         self.dir = "down"
         self.frame = 0
         self.images = {
-            "down":  load_and_scale("src\\assets\\player\\down.png",  TILE_SIZE, TILE_SIZE*2),
-            "up":    load_and_scale("src\\assets\\player\\top.png",    TILE_SIZE, TILE_SIZE*2),
-            "left":  load_and_scale("src\\assets\\player\\left.png",  TILE_SIZE, TILE_SIZE*2),
-            "right": load_and_scale("src\\assets\\player\\right.png", TILE_SIZE, TILE_SIZE*2),
+            "down": [
+                load_and_scale("src/assets/player/down1.png", TILE_SIZE, TILE_SIZE*2),
+                load_and_scale("src/assets/player/down2.png", TILE_SIZE, TILE_SIZE*2)
+            ],
+            "up": [
+                load_and_scale("src/assets/player/up1.png", TILE_SIZE, TILE_SIZE*2),
+                load_and_scale("src/assets/player/up2.png", TILE_SIZE, TILE_SIZE*2)
+            ],
+            "left": [
+                load_and_scale("src/assets/player/left1.png", TILE_SIZE, TILE_SIZE*2),
+                load_and_scale("src/assets/player/left2.png", TILE_SIZE, TILE_SIZE*2)
+            ],
+            "right": [
+                load_and_scale("src/assets/player/right1.png", TILE_SIZE, TILE_SIZE*2),
+                load_and_scale("src/assets/player/right2.png", TILE_SIZE, TILE_SIZE*2)
+            ],
+            "idle": [
+                load_and_scale("src/assets/player/idle1.png", TILE_SIZE, TILE_SIZE*2),
+                load_and_scale("src/assets/player/idle2.png", TILE_SIZE, TILE_SIZE*2)
+            ]
         }
+        self.anim_timer = 0
+        self.anim_speed = 0.35
 
     @property
     def camera_offset(self):
@@ -31,31 +49,24 @@ class Player:
 
     def update(self, dt, keys, room):
         dx = dy = 0
-        
+        self.moving = False
+
         if keys[pygame.K_LSHIFT]:
             self.speed = 240
+            self.anim_speed = 0.25
         else:
             self.speed = 120
+            self.anim_speed = 0.35
 
         if keys[pygame.K_UP]:
-            dy = -self.speed * dt; self.dir = "up"
+            dy = -self.speed * dt; self.dir = "up"; self.moving = True
         elif keys[pygame.K_DOWN]:
-            dy = self.speed * dt;  self.dir = "down"
+            dy = self.speed * dt;  self.dir = "down"; self.moving = True
         elif keys[pygame.K_LEFT]:
-            dx = -self.speed * dt; self.dir = "left"
+            dx = -self.speed * dt; self.dir = "left"; self.moving = True
         elif keys[pygame.K_RIGHT]:
-            dx = self.speed * dt;  self.dir = "right"
-            
-        # if keys[pygame.K_w]:
-        #     dy = -self.speed * dt; self.dir = "up"
-        # elif keys[pygame.K_s]:
-        #     dy = self.speed * dt;  self.dir = "down"
-        # elif keys[pygame.K_a]:
-        #     dx = -self.speed * dt; self.dir = "left"
-        # elif keys[pygame.K_d]:
-        #     dx = self.speed * dt;  self.dir = "right"
+            dx = self.speed * dt;  self.dir = "right"; self.moving = True
 
-        # simulate 1×1 collision at foot:
         new_x = self.x + dx
         new_y = self.y + dy
         foot_rect = pygame.Rect(new_x + 1, new_y + TILE_SIZE - 1, TILE_SIZE - 1, TILE_SIZE - 1)
@@ -63,11 +74,23 @@ class Player:
             self.x = new_x
             self.y = new_y
 
-        # step animation (if you have sprite sheets, advance self.frame here)
+        # Animation logic
+        if self.moving:
+            self.anim_timer += dt
+            if self.anim_timer >= self.anim_speed:
+                self.anim_timer = 0
+                self.frame = (self.frame + 1) % 2
+        else:
+            self.anim_timer += dt
+            if self.anim_timer >= self.anim_speed:
+                self.anim_timer = 0
+                self.frame = (self.frame + 1) % 2
         
     def draw(self, surf):
-        img = self.images[self.dir]
-        # we draw at world position minus camera
+        if self.moving:
+            img = self.images[self.dir][self.frame]
+        else:
+            img = self.images["idle"][self.frame]
         offset = self.camera_offset
         draw_pos = (self.x - offset.x, self.y - offset.y)
         surf.blit(img, draw_pos)

@@ -8,7 +8,3 @@ class DoorTwo(Doors):
         self.scene_manager = scene_manager
         self.unlocked = False
 
-    def draw(self, surface, cam_off):
-        pos = (self.rect.x - cam_off.x, self.rect.y - cam_off.y - TILE_SIZE)
-        pygame.draw.rect(surface, (150,75,0), (*pos, TILE_SIZE, TILE_SIZE*2))
-

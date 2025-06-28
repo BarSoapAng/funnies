@@ -9,10 +9,6 @@ class Doors(InteractiveObject):
         self.unlocked = True
         self.spawn = spawn_point
 
-    def draw(self, surface, cam_off):
-        pos = (self.rect.x - cam_off.x, self.rect.y - cam_off.y)
-        pygame.draw.rect(surface, (150,75,0), (*pos, TILE_SIZE, TILE_SIZE))
-
     def interact(self, screen):
         self.scene_manager.load_room(self.leads_to)
         return True

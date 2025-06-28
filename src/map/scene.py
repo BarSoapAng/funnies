@@ -10,9 +10,9 @@ with open("src\map\specs.json") as f:
     ALL_SPECS = json.load(f)
 
 class Room:
-    def __init__(self, grid, spawn, SceneManager, map_name, collected, player):
-        self.grid = grid        # 2D list of strings
-        self.spawn_point = spawn
+    def __init__(self, grid, SceneManager, map_name, collected, player):
+        self.grid = grid
+        self.map_image = pygame.image.load(f"src/map/rooms/{map_name}.png").convert_alpha()
         
         specs = ALL_SPECS.get(map_name, [])
         filtered = []
@@ -41,12 +41,14 @@ class Room:
         return False
 
     def draw(self, surf, camera_offset):
-        for y, row in enumerate(self.grid):
-            for x, cell in enumerate(row):
-                if cell == WALL_TILE:
-                    world_pos = (x*TILE_SIZE - camera_offset.x,
-                                 y*TILE_SIZE - camera_offset.y)
-                    pygame.draw.rect(surf, (100,100,100), (*world_pos, TILE_SIZE, TILE_SIZE))
+        map_width = self.map_image.get_width() // TILE_SIZE
+        map_height = self.map_image.get_height() // TILE_SIZE
+        for y in range(map_height):
+            for x in range(map_width):
+                rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+                tile = self.map_image.subsurface(rect)
+                world_pos = (x * TILE_SIZE - camera_offset.x, y * TILE_SIZE - camera_offset.y)
+                surf.blit(tile, world_pos)
         self.objects.draw(surf, camera_offset)
 
 class SceneManager:
@@ -58,12 +60,8 @@ class SceneManager:
 
     def load_room(self, filename):
         grid = []
-        spawn = (1,1)
-        with open(f"src/map/rooms/{filename}", newline="") as f:
+        with open(f"src/map/rooms/{filename}.csv", newline="") as f:
             reader = csv.reader(f)
-            for y,row in enumerate(reader):
+            for row in reader:
                 grid.append(row)
-                for x,cell in enumerate(row):
-                    if cell == "S":  # mark spawn in your CSV
-                        spawn = (x, y)
-        self.current_room = Room(grid, spawn, self, filename, self.collected_items, self.player)
+        self.current_room = Room(grid, self, filename, self.collected_items, self.player)

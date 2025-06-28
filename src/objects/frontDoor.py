@@ -8,23 +8,17 @@ class PinPadPopup:
         self.input_code = ""
         self.active = True
         self.door = door
-        self.message = ""
-        # self.on_success = "Something unlocked."
-        # self.on_fail = "Hint: 6 numbers"
-        self.font = pygame.font.SysFont(None, 36)
+        self.FONT = pygame.font.Font("src/assets/PixelifySans-Regular.ttf", 18)
 
     def draw(self):
         sw, sh = screen.get_size()
-        popup_w, popup_h = 300, 150
+        popup_w, popup_h = 200, 50
         popup = pygame.Surface((popup_w, popup_h))
         popup.fill((30, 30, 30))
         pygame.draw.rect(popup, (255,255,255), popup.get_rect(), 2)
 
-        code_surf = self.font.render(self.input_code, True, (255,255,255))
-        popup.blit(code_surf, (20, 40))
-
-        msg_surf = self.font.render(self.message, True, (255,0,0))
-        popup.blit(msg_surf, (20, 90))
+        code_surf = self.FONT.render(self.input_code, True, (255,255,255))
+        popup.blit(code_surf, (20, 15))
 
         screen.blit(popup, ((sw-popup_w)//2, (sh-popup_h)//2))
         
@@ -38,7 +32,6 @@ class PinPadPopup:
                     self.active = False
                     self.door.open = True
                 else:
-                    self.message = "Hint: 6#"
                     self.input_code = ""
             elif event.key == pygame.K_BACKSPACE:
                 self.input_code = self.input_code[:-1]

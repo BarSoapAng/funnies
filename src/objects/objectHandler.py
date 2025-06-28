@@ -11,13 +11,13 @@ class InteractiveObject:
             tile_pos[1] * TILE_SIZE,
             width, height
         )
+        self.FONT = pygame.font.Font("src/assets/PixelifySans-Regular.ttf", 18)
         self.message = message
         if message:
             self._make_popup()
 
     def _make_popup(self):
-        font = pygame.font.SysFont(None, 24)
-        text = font.render(self.message, True, (255, 255, 255))
+        text = self.FONT.render(self.message, True, (255, 255, 255))
         pad = 10
         w, h = text.get_size()
         surf = pygame.Surface((w+pad*2, h+pad*2))
@@ -27,9 +27,7 @@ class InteractiveObject:
         self.popup_surf = surf
 
     def draw(self, surface, cam_off):
-        # default placeholder; override in subclasses as needed
-        pos = (self.rect.x - cam_off.x, self.rect.y - cam_off.y)
-        pygame.draw.rect(surface, (200, 200, 0), (*pos, self.rect.w, self.rect.h))
+        pass
 
     def is_player_facing(self, player):
         px, py = player.x, player.y
@@ -53,7 +51,7 @@ class InteractiveObject:
 class ObjectHandler:
     def __init__(self, specs, scene_manager, player):
         class_map = {
-            "TreeStump":    "src.objects.treeStump",
+            "Notes":    "src.objects.notes",
             "DoorOne":      "src.objects.doorOne",
             "DoorTwo":      "src.objects.doorTwo",
             "Collectible": "src.objects.collectible",

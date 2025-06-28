@@ -9,21 +9,6 @@ class Vase(InteractiveObject):
         self.scene_manager = scene_manager
         self.door = door
 
-    def _make_popup(self):
-        font = pygame.font.SysFont(None, 24)
-        text = font.render(self.message, True, (255, 255, 255))
-        pad = 10
-        w, h = text.get_size()
-        surf = pygame.Surface((w+pad*2, h+pad*2))
-        surf.fill((0, 0, 0))
-        pygame.draw.rect(surf, (255, 255, 255), surf.get_rect(), 2)
-        surf.blit(text, (pad, pad))
-        self.popup_surf = surf
-
-    def draw(self, surface, cam_off):
-        pos = (self.rect.x - cam_off.x, self.rect.y - cam_off.y)
-        pygame.draw.rect(surface, (150,75,0), (*pos, TILE_SIZE, TILE_SIZE))
-
     def interact(self,screen):
         if "rose" in self.scene_manager.collected_items:
             self.message = self.unlocked
